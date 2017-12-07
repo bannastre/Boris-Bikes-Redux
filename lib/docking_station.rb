@@ -1,5 +1,11 @@
+require_relative 'bike'
+
 class DockingStation 
   def say_hello
-    p 'Hello World!'
+    'Hello World!'
+  end
+
+  def release_bike
+    Bike.new
   end
 end
