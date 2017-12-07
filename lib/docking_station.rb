@@ -1,7 +1,7 @@
 require_relative 'bike'
 
 class DockingStation
-  
+
   def initialize
     @docked_bikes = []
   end
@@ -16,6 +16,10 @@ class DockingStation
 
   def show_docked_bikes
     @docked_bikes
+  end
+
+  def dock_bike(bike)
+    @docked_bikes.push(bike)
   end
 
 end
