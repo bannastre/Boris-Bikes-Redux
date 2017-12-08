@@ -10,8 +10,8 @@ class DockingStation
     @capacity = MAX_CAPACITY 
   end
 
-  def release_bike
-    @docked_bikes.empty? ? raise('No bikes available') : Bike.new
+  def release_bike(bike)
+    @docked_bikes.empty? ? raise('No bikes available') : release_if_healthy(bike)
   end
 
   def show_docked_bikes
@@ -23,6 +23,10 @@ class DockingStation
   end
 
   private
+
+  def release_if_healthy(bike)
+    bike.working ? bike : raise('No working bikes available')
+  end
 
   def at_capacity
     @docked_bikes.length >= @capacity

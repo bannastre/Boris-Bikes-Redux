@@ -16,12 +16,12 @@ describe DockingStation do
   
   it 'can release a new bike' do
     subject.dock_bike(@bike)
-    expect(subject.release_bike.working?).to eql(true)
+    expect(subject.release_bike(@bike).working).to eql(true)
   end
 
   it 'releases a working bike' do
     subject.dock_bike(@bike)
-    expect(subject.release_bike).to be_a(Bike)
+    expect(subject.release_bike(@bike)).to be_a(Bike)
   end
 
   it 'knows the bikes that are docked' do
@@ -34,7 +34,7 @@ describe DockingStation do
   end
 
   it 'does not release a bike if there are none available' do
-    expect { subject.release_bike }.to raise_error('No bikes available')
+    expect { subject.release_bike(@bike) }.to raise_error('No bikes available')
   end
 
   it 'is initiated with a default capacity of 20' do
@@ -44,5 +44,11 @@ describe DockingStation do
   it "won't accept any more bikes if the DS is at max capacity" do
     @max_capacity.times { subject.dock_bike(@bike) }
     expect { subject.dock_bike(@bike) }.to raise_error('Docking Station at Capacity')
+  end
+
+  it "won't release broken bikes" do
+    @bike.report_broken
+    subject.dock_bike(@bike)
+    expect { subject.release_bike(@bike) }.to raise_error('No working bikes available')
   end
 end
