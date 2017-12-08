@@ -1,21 +1,24 @@
 require 'docking_station'
 
 describe DockingStation do
-  it 'is polite' do
-    expect(subject.say_hello).to eql('Hello World!')
-  end
+
+  before(:each) do
+    @bike = Bike.new
+  end 
 
   it { is_expected.to respond_to(:release_bike) }
 
   it { is_expected.to respond_to(:show_docked_bikes) }
 
   it { is_expected.to respond_to(:dock_bike) }
-
+  
   it 'can release a new bike' do
+    subject.dock_bike(@bike)
     expect(subject.release_bike.working?).to eql(true)
   end
 
   it 'releases a working bike' do
+    subject.dock_bike(@bike)
     expect(subject.release_bike).to be_a(Bike)
   end
 
@@ -24,9 +27,12 @@ describe DockingStation do
   end
 
   it 'adds docked bikes to the list of bikes that are docked' do
-    bike = Bike.new
-    subject.dock_bike(bike)
-    expect(subject.show_docked_bikes).to eql([bike])
+    subject.dock_bike(@bike)
+    expect(subject.show_docked_bikes).to eql([@bike])
+  end
+
+  it 'does not release a bike if there are none available' do
+    expect { subject.release_bike }.to raise_error('No bikes available')
   end
 
 end

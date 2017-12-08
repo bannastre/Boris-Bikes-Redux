@@ -5,13 +5,9 @@ class DockingStation
   def initialize
     @docked_bikes = []
   end
-  
-  def say_hello
-    'Hello World!'
-  end
 
   def release_bike
-    Bike.new
+    @docked_bikes.empty? ? raise('No bikes available') : Bike.new
   end
 
   def show_docked_bikes
