@@ -1,11 +1,13 @@
 require_relative 'bike'
 
 class DockingStation
-  
   MAX_CAPACITY = 20
 
-  def initialize
+  attr_reader :capacity
+  
+  def initialize()
     @docked_bikes = []
+    @capacity = MAX_CAPACITY 
   end
 
   def release_bike
@@ -20,14 +22,10 @@ class DockingStation
     at_capacity ? raise('Docking Station at Capacity') : @docked_bikes.push(bike)
   end
 
-  def capacity
-    MAX_CAPACITY
-  end
-
   private
 
   def at_capacity
-    @docked_bikes.length >= MAX_CAPACITY
+    @docked_bikes.length >= @capacity
   end
 
 end

@@ -3,6 +3,7 @@ require 'docking_station'
 describe DockingStation do
   before(:each) do
     @bike = Bike.new
+    @max_capacity = DockingStation::MAX_CAPACITY
   end 
 
   it { is_expected.to respond_to(:release_bike) }
@@ -10,6 +11,8 @@ describe DockingStation do
   it { is_expected.to respond_to(:show_docked_bikes) }
 
   it { is_expected.to respond_to(:dock_bike) }
+
+  it { is_expected.to respond_to(:capacity) }
   
   it 'can release a new bike' do
     subject.dock_bike(@bike)
@@ -35,11 +38,11 @@ describe DockingStation do
   end
 
   it 'is initiated with a default capacity of 20' do
-    expect(DockingStation::MAX_CAPACITY).to eql(20)
+    expect(subject.capacity).to eql(@max_capacity)
   end
 
   it "won't accept any more bikes if the DS is at max capacity" do
-    DockingStation::MAX_CAPACITY.times { subject.dock_bike(@bike) }
+    @max_capacity.times { subject.dock_bike(@bike) }
     expect { subject.dock_bike(@bike) }.to raise_error('Docking Station at Capacity')
   end
 end
