@@ -1,7 +1,6 @@
 require 'docking_station'
 
 describe DockingStation do
-
   before(:each) do
     @bike = Bike.new
   end 
@@ -35,4 +34,12 @@ describe DockingStation do
     expect { subject.release_bike }.to raise_error('No bikes available')
   end
 
+  it 'is initiated with a default capacity of 20' do
+    expect(DockingStation::MAX_CAPACITY).to eql(20)
+  end
+
+  it "won't accept any more bikes if the DS is at max capacity" do
+    DockingStation::MAX_CAPACITY.times { subject.dock_bike(@bike) }
+    expect { subject.dock_bike(@bike) }.to raise_error('Docking Station at Capacity')
+  end
 end
