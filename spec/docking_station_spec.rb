@@ -2,9 +2,12 @@ require 'docking_station'
 
 describe DockingStation do
   before(:each) do
-    @bike = Bike.new
+    @bike = instance_double("Bike", :working => true)
+    @broken_bike = instance_double("Bike", :working => false)
     @max_capacity = DockingStation::MAX_CAPACITY
-  end 
+  end
+  
+  it { is_expected.to be_a(DockingStation) }
 
   it { is_expected.to respond_to(:release_bike) }
 
@@ -14,14 +17,9 @@ describe DockingStation do
 
   it { is_expected.to respond_to(:capacity) }
   
-  it 'can release a new bike' do
+  it 'can release a working bike' do
     subject.dock_bike(@bike)
     expect(subject.release_bike(@bike).working).to eql(true)
-  end
-
-  it 'releases a working bike' do
-    subject.dock_bike(@bike)
-    expect(subject.release_bike(@bike)).to be_a(Bike)
   end
 
   it 'knows the bikes that are docked' do
@@ -47,8 +45,7 @@ describe DockingStation do
   end
 
   it "won't release broken bikes" do
-    @bike.report_broken
-    subject.dock_bike(@bike)
-    expect { subject.release_bike(@bike) }.to raise_error('No working bikes available')
+    subject.dock_bike(@broken_bike)
+    expect { subject.release_bike(@broken_bike) }.to raise_error('No working bikes available')
   end
 end
